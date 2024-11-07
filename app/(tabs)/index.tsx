@@ -1,9 +1,5 @@
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View, Platform, Image } from 'react-native';
 
 export default function HomeScreen() {
@@ -19,23 +15,69 @@ export default function HomeScreen() {
     // Camera permissions are not granted yet.
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
+        <Text style={styles.message}>Precisamos de sua permissão para usar a câmera</Text>
+        <Button onPress={requestPermission} title="Conceder permissão" />
       </View>
     );
   }
 
-  function toggleCameraFacing() {
-    setFacing(current => (current === 'back' ? 'front' : 'back'));
+  let crachaID = '';
+
+  const confirmarEntrada = (data: any) => {
+
+    if (crachaID != data.data) {
+      crachaID = data.data;
+      console.log(`Entrada confirmada! 🆗 ID: ${crachaID}`);
+      const url = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha.php?movimentacao=${crachaID}&tipo=veiculo&status=Entrada&destino=Residência&obs=`;
+      
+      fetch(url)
+      //não é json
+      .then(response => response.ok)
+      // perguntar se deseja continuar ou não a entrada
+      
+      .then(result => {
+        console.log('Requisição bem-sucedida:', result);
+        // Você pode adicionar qualquer lógica adicional aqui
+        return (
+          <View>
+            <Text>Entrada confirmada! 🆗</Text>
+            <Text>ID: {data.data}</Text>
+          </View>
+        );
+      })
+      .catch(error => {
+        console.error('Erro na requisição:', error);
+        return;
+      });
+      return;
+    } else {
+      console.log('Entrada já confirmada do crachá ID:', crachaID);
+      return;
+    }
+
   }
 
   return (
     <View style={styles.container}>
-      <CameraView style={styles.camera} facing={facing}>
+      <CameraView 
+      style={styles.camera} 
+      facing='back'
+      barcodeScannerSettings={{barcodeTypes: ["qr"],}}
+      onBarcodeScanned={(data) => {
+        // confirmar a entrada somente uma vez
+        return (
+          // modal de entrada confirmada
+          <View>
+            <Text>Entrada confirmada! 🆗</Text>
+            <Text>ID: {data.data}</Text>  
+          </View>
+        )
+        confirmarEntrada(data);
+      }
+    }
+      >
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
+            <Text style={styles.text}>ENTRADA</Text>
         </View>
       </CameraView>
     </View>
@@ -55,6 +97,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   buttonContainer: {
+    justifyContent: 'center',
     flex: 1,
     flexDirection: 'row',
     backgroundColor: 'transparent',
@@ -65,8 +108,9 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     alignItems: 'center',
   },
+  // alinhar o texto no centro
   text: {
-    fontSize: 24,
+    fontSize: 16,
     fontWeight: 'bold',
     color: 'white',
   },
