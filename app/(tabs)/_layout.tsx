@@ -17,7 +17,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Movimentação',
+          title: 'Registrar movimento',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'arrow-down-circle' : 'arrow-down-circle-outline'} color={color} />
           ),
@@ -26,9 +26,9 @@ export default function TabLayout() {
       <Tabs.Screen
         name="explore"
         options={{
-          title: 'Saída',
+          title: 'Verificar movimentações',
           tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon name={focused ? 'arrow-up-circle' : 'arrow-up-circle-outline'} color={color} />
+            <TabBarIcon name={focused ? 'eye' : 'eye-outline'} color={color} />
           ),
         }}
       />
