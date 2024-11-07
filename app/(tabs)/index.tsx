@@ -25,22 +25,33 @@ export default function HomeScreen() {
 
   const confirmarEntrada = (data: any) => {
     if (crachaID != data.data) {
-      const url = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha.php?movimentacao=${data.data}&verificar=sim`;
+      
+      const cracha = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha2.php?id=${data.data}`
+      
+      let tipo = '';
       
       setCrachaID(data.data);
-      fetch(url)
-      //não é json
-      .then(response => response.text())
-      // perguntar se deseja continuar ou não a entrada
       
+      fetch(cracha)
+      //não é json
+      .then(response => response.json())
       .then(result => {
-        console.log(result);
-        // Você pode adicionar qualquer lógica adicional aqui
+        tipo = result;
+        console.log(tipo);
         setMessageVisible(true);
       })
-      .catch(error => {
-        console.error('Erro na requisição:', error);
-      });
+      .then(() => {
+        const url = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha.php?movimentacao=${data.data}&tipo=${tipo}&status=${movimentacao}&destino=&obs=`
+        fetch(url)
+        .then(response => response.status)
+        .then(result => {
+          console.log(url);
+          setMessageVisible(true);
+        })
+        .catch(error => {
+          console.error('Erro na requisição:', error);
+        });
+      })
     } else {
       return;
     }
