@@ -36,10 +36,6 @@ export default function HomeScreen() {
         console.log('Requisição bem-sucedida:', result);
         // Você pode adicionar qualquer lógica adicional aqui
         setMessageVisible(true);
-        setTimeout(() => {
-          setMessageVisible(false);
-        }
-        , 3000);
       })
       .catch(error => {
         console.error('Erro na requisição:', error);
@@ -69,6 +65,12 @@ export default function HomeScreen() {
         <View style={styles.confirmationMessage}>
           <Text style={styles.confirmationText}>Entrada confirmada! 🆗</Text>
           <Text style={styles.confirmationText}>ID: {crachaID}</Text>
+          <TouchableOpacity style={styles.closeButton} onPress={() => {
+            setMessageVisible(false) 
+            setCrachaID('')
+            }}>
+            <Text style={styles.closeButtonText}>Fechar</Text>
+          </TouchableOpacity>
         </View>
       )}
     </View>
@@ -118,5 +120,15 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 16,
     textAlign: 'center',
+  },
+  closeButton: {
+    marginTop: 10,
+    padding: 10,
+    backgroundColor: '#FF6347',
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
