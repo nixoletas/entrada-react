@@ -5,6 +5,7 @@ import { Button, StyleSheet, Text, TouchableOpacity, View, Platform, Image } fro
 export default function HomeScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [messageVisible, setMessageVisible] = useState(false);
+  const [movimentacao, setMovimentacao] = useState('entrada');
   const [crachaID, setCrachaID] = useState('');
 
   if (!permission) {
@@ -24,7 +25,7 @@ export default function HomeScreen() {
 
   const confirmarEntrada = (data: any) => {
     if (crachaID != data.data) {
-      const url = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha.php?movimentacao=${data.data}&tipo=veiculo&status=Entrada&destino=Residência&obs=`;
+      const url = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha.php?movimentacao=${data.data}&tipo=veiculo&status=${movimentacao}&destino=&obs=`;
       
       setCrachaID(data.data);
       fetch(url)
@@ -58,12 +59,12 @@ export default function HomeScreen() {
     }
       >
         <View style={styles.buttonContainer}>
-            <Text style={styles.text}>ENTRADA</Text>
+            <Text style={styles.text}>{movimentacao.toString().toUpperCase()}</Text>
         </View>
       </CameraView>
       {messageVisible && (
         <View style={styles.confirmationMessage}>
-          <Text style={styles.confirmationText}>Entrada confirmada! 🆗</Text>
+          <Text style={styles.confirmationText}>{movimentacao.toString().toLocaleUpperCase()} confirmada! 🆗</Text>
           <Text style={styles.confirmationText}>ID: {crachaID}</Text>
           <TouchableOpacity style={styles.closeButton} onPress={() => {
             setMessageVisible(false) 
@@ -73,6 +74,24 @@ export default function HomeScreen() {
           </TouchableOpacity>
         </View>
       )}
+
+        <View style={styles.typeMessage}>
+          {movimentacao === 'entrada' ? (
+            <TouchableOpacity style={styles.entradaButton} onPress={() => {
+              movimentacao === 'entrada' ? setMovimentacao('saida') : setMovimentacao('entrada');
+              }}>
+              <Text style={styles.closeButtonText}>{movimentacao.toString().toUpperCase()}</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity style={styles.closeButton} onPress={() => {
+              movimentacao === 'entrada' ? setMovimentacao('saida') : setMovimentacao('entrada');
+              }}>
+              <Text style={styles.closeButtonText}>{movimentacao.toString().toUpperCase()}</Text>
+            </TouchableOpacity>
+          )
+          }
+          
+        </View>
     </View>
   );
 }
@@ -107,12 +126,19 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
-  confirmationMessage: {
+  typeMessage: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 10,
     left: '20%',
     right: '20%',
     padding: 10,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    borderRadius: 8,
+  },
+  confirmationMessage: {
+    position: 'absolute',
+    left: '20%',
+    right: '20%',
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
     borderRadius: 8,
   },
@@ -130,5 +156,13 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: 'white',
     fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  entradaButton: {
+    marginTop: 10,
+    padding: 10,
+    //fundo verde
+    backgroundColor: '#008000',
+    borderRadius: 5,
   },
 });

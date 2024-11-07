@@ -17,7 +17,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Entrada',
+          title: 'Movimentação',
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon name={focused ? 'arrow-down-circle' : 'arrow-down-circle-outline'} color={color} />
           ),
