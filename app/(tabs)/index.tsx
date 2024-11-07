@@ -1,6 +1,9 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import { Stack } from 'expo-router';
 import React, { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View, Platform, Image } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Overlay } from '../Overlay';
 
 export default function HomeScreen() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -25,84 +28,76 @@ export default function HomeScreen() {
 
   const confirmarEntrada = (data: any) => {
     if (crachaID != data.data) {
-      
-      const cracha = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha2.php?id=${data.data}`
-      
+      const cracha = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha2.php?id=${data.data}`;
       let tipo = '';
-      
       setCrachaID(data.data);
-      
+
       fetch(cracha)
-      //não é json
-      .then(response => response.json())
-      .then(result => {
-        tipo = result;
-        console.log(tipo);
-        setMessageVisible(true);
-      })
-      .then(() => {
-        const url = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha.php?movimentacao=${data.data}&tipo=${tipo}&status=${movimentacao}&destino=&obs=`
-        fetch(url)
-        .then(response => response.status)
+        .then(response => response.json())
         .then(result => {
-          console.log(url);
+          tipo = result;
+          console.log(tipo);
           setMessageVisible(true);
         })
-        .catch(error => {
-          console.error('Erro na requisição:', error);
+        .then(() => {
+          const url = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha.php?movimentacao=${data.data}&tipo=${tipo}&status=${movimentacao}&destino=&obs=`;
+          fetch(url)
+            .then(response => response.status)
+            .then(result => {
+              console.log(url);
+              setMessageVisible(true);
+            })
+            .catch(error => {
+              console.error('Erro na requisição:', error);
+            });
         });
-      })
     } else {
       return;
     }
-
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <CameraView 
-      style={styles.camera} 
-      facing='back'
-      barcodeScannerSettings={{barcodeTypes: ["qr"],}}
-      onBarcodeScanned={(data) => {
-        confirmarEntrada(data);
-      }
-    }
+      <CameraView
+        style={styles.camera}
+        facing='back'
+        barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
+        onBarcodeScanned={(data) => {
+          confirmarEntrada(data);
+        }}
       >
         <View style={styles.buttonContainer}>
-            <Text style={styles.text}>{movimentacao.toString().toUpperCase()}</Text>
+          <Text style={styles.text}>{movimentacao.toString().toUpperCase()}</Text>
         </View>
+        <Overlay />
       </CameraView>
       {messageVisible && (
         <View style={styles.confirmationMessage}>
           <Text style={styles.confirmationText}>{movimentacao.toString().toLocaleUpperCase()} confirmada! 🆗</Text>
           <Text style={styles.confirmationText}>ID: {crachaID}</Text>
           <TouchableOpacity style={styles.closeButton} onPress={() => {
-            setMessageVisible(false) 
-            setCrachaID('')
-            }}>
+            setMessageVisible(false);
+            setCrachaID('');
+          }}>
             <Text style={styles.closeButtonText}>Fechar</Text>
           </TouchableOpacity>
         </View>
       )}
-
-        <View style={styles.typeMessage}>
-          {movimentacao === 'entrada' ? (
-            <TouchableOpacity style={styles.entradaButton} onPress={() => {
-              movimentacao === 'entrada' ? setMovimentacao('saida') : setMovimentacao('entrada');
-              }}>
-              <Text style={styles.closeButtonText}>{movimentacao.toString().toUpperCase()}</Text>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity style={styles.closeButton} onPress={() => {
-              movimentacao === 'entrada' ? setMovimentacao('saida') : setMovimentacao('entrada');
-              }}>
-              <Text style={styles.closeButtonText}>{movimentacao.toString().toUpperCase()}</Text>
-            </TouchableOpacity>
-          )
-          }
-          
-        </View>
+      <View style={styles.typeMessage}>
+        {movimentacao === 'entrada' ? (
+          <TouchableOpacity style={styles.entradaButton} onPress={() => {
+            movimentacao === 'entrada' ? setMovimentacao('saida') : setMovimentacao('entrada');
+          }}>
+            <Text style={styles.closeButtonText}>{movimentacao.toString().toUpperCase()}</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.closeButton} onPress={() => {
+            movimentacao === 'entrada' ? setMovimentacao('saida') : setMovimentacao('entrada');
+          }}>
+            <Text style={styles.closeButtonText}>{movimentacao.toString().toUpperCase()}</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 }
@@ -131,7 +126,6 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     alignItems: 'center',
   },
-  // alinhar o texto no centro
   text: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -172,7 +166,6 @@ const styles = StyleSheet.create({
   entradaButton: {
     marginTop: 10,
     padding: 10,
-    //fundo verde
     backgroundColor: '#008000',
     borderRadius: 5,
   },
