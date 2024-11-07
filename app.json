@@ -19,7 +19,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.nixoletas.entradareact"
     },
     "web": {
       "bundler": "metro",
@@ -39,6 +44,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "5cbe7e76-b879-4c3a-a50a-b58ea9e5a37c"
+      }
     }
   }
 }

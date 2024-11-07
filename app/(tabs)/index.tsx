@@ -1,9 +1,6 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Overlay } from '../Overlay';
 
 export default function HomeScreen() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -69,7 +66,6 @@ export default function HomeScreen() {
         <View style={styles.buttonContainer}>
           <Text style={styles.text}>{movimentacao.toString().toUpperCase()}</Text>
         </View>
-        <Overlay />
       </CameraView>
       {messageVisible && (
         <View style={styles.confirmationMessage}>
