@@ -25,16 +25,16 @@ export default function HomeScreen() {
 
   const confirmarEntrada = (data: any) => {
     if (crachaID != data.data) {
-      const url = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha.php?movimentacao=${data.data}&tipo=veiculo&status=${movimentacao}&destino=&obs=`;
+      const url = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha.php?movimentacao=${data.data}&verificar=sim`;
       
       setCrachaID(data.data);
       fetch(url)
       //não é json
-      .then(response => response.status)
+      .then(response => response.text())
       // perguntar se deseja continuar ou não a entrada
       
       .then(result => {
-        console.log('Requisição bem-sucedida:', result);
+        console.log(result);
         // Você pode adicionar qualquer lógica adicional aqui
         setMessageVisible(true);
       })
@@ -42,7 +42,7 @@ export default function HomeScreen() {
         console.error('Erro na requisição:', error);
       });
     } else {
-      console.log('Entrada já confirmada do crachá ID:', crachaID);
+      return;
     }
 
   }
