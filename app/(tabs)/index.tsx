@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     padding: 15,
     //background white
-    backgroundColor: '#3f3f3f',
+    backgroundColor: '#FF1224',
     borderRadius: 5,
   },
   closeButtonText: {
