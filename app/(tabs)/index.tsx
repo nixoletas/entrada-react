@@ -7,7 +7,7 @@ import { Overlay } from '../Overlay';
 
 export default function HomeScreen() {
   const [permission, requestPermission] = useCameraPermissions();
-  const [messageVisible, setMessageVisible] = useState(false);
+  const [messageVisible, setMessageVisible] = useState(true);
   const [movimentacao, setMovimentacao] = useState('entrada');
   const [crachaID, setCrachaID] = useState('');
 
@@ -87,12 +87,16 @@ export default function HomeScreen() {
         {movimentacao === 'entrada' ? (
           <TouchableOpacity style={styles.entradaButton} onPress={() => {
             movimentacao === 'entrada' ? setMovimentacao('saida') : setMovimentacao('entrada');
+            setMessageVisible(false);
+            setCrachaID('');
           }}>
             <Text style={styles.closeButtonText}>{movimentacao.toString().toUpperCase()}</Text>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity style={styles.closeButton} onPress={() => {
+          <TouchableOpacity style={styles.saidaButton} onPress={() => {
             movimentacao === 'entrada' ? setMovimentacao('saida') : setMovimentacao('entrada');
+            setMessageVisible(false);
+            setCrachaID('');
           }}>
             <Text style={styles.closeButtonText}>{movimentacao.toString().toUpperCase()}</Text>
           </TouchableOpacity>
@@ -133,17 +137,17 @@ const styles = StyleSheet.create({
   },
   typeMessage: {
     position: 'absolute',
-    bottom: 10,
+    bottom: 24,
     left: '20%',
     right: '20%',
-    padding: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    padding: 20,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     borderRadius: 8,
   },
   confirmationMessage: {
     position: 'absolute',
-    left: '20%',
-    right: '20%',
+    left: '15%',
+    right: '15%',
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
     borderRadius: 8,
   },
@@ -154,8 +158,9 @@ const styles = StyleSheet.create({
   },
   closeButton: {
     marginTop: 10,
-    padding: 10,
-    backgroundColor: '#FF6347',
+    padding: 15,
+    //background white
+    backgroundColor: '#3f3f3f',
     borderRadius: 5,
   },
   closeButtonText: {
@@ -164,9 +169,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   entradaButton: {
-    marginTop: 10,
-    padding: 10,
+    marginTop: 15,
+    padding: 30,
     backgroundColor: '#008000',
+    borderRadius: 5,
+  },
+  saidaButton: {
+    marginTop: 15,
+    padding: 30,
+    backgroundColor: '#FF6347',
     borderRadius: 5,
   },
 });
