@@ -49,15 +49,15 @@ export default function HomeScreen() {
             status: movimentacao,
           });
           console.log(requestOptions);
-          // fetch(url)
-          //   .then(response => response.status)
-          //   .then(result => {
-          //     console.log(url);
-          //     setMessageVisible(true);
-          //   })
-          //   .catch(error => {
-          //     console.error('Erro na requisição:', error);
-          //   });
+          fetch(url)
+            .then(response => response.status)
+            .then(result => {
+              console.log(url);
+              setMessageVisible(true);
+            })
+            .catch(error => {
+              console.error('Erro na requisição:', error);
+            });
           return requestOptions;
         });
         return requestOptions;
