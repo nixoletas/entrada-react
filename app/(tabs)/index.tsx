@@ -7,6 +7,11 @@ export default function HomeScreen() {
   const [messageVisible, setMessageVisible] = useState(false);
   const [movimentacao, setMovimentacao] = useState('entrada');
   const [crachaID, setCrachaID] = useState('');
+  const [requestOptions, setRequestOptions] = useState({
+    ID: '',
+    tipo: '',
+    status: '',
+  });
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -38,16 +43,24 @@ export default function HomeScreen() {
         })
         .then(() => {
           const url = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha.php?movimentacao=${data.data}&tipo=${tipo}&status=${movimentacao}&destino=&obs=`;
-          fetch(url)
-            .then(response => response.status)
-            .then(result => {
-              console.log(url);
-              setMessageVisible(true);
-            })
-            .catch(error => {
-              console.error('Erro na requisição:', error);
-            });
+          setRequestOptions({
+            ID: data.data,
+            tipo: tipo,
+            status: movimentacao,
+          });
+          console.log(requestOptions);
+          // fetch(url)
+          //   .then(response => response.status)
+          //   .then(result => {
+          //     console.log(url);
+          //     setMessageVisible(true);
+          //   })
+          //   .catch(error => {
+          //     console.error('Erro na requisição:', error);
+          //   });
+          return requestOptions;
         });
+        return requestOptions;
     } else {
       return;
     }
@@ -69,8 +82,11 @@ export default function HomeScreen() {
       </CameraView>
       {messageVisible && (
         <View style={styles.confirmationMessage}>
-          <Text style={styles.confirmationText}>{movimentacao.toString().toLocaleUpperCase()} confirmada! 🆗</Text>
-          <Text style={styles.confirmationText}>ID: {crachaID}</Text>
+          <Text style={styles.confirmationText}>{movimentacao.toString().toLocaleUpperCase()} confirmada! ✅</Text>
+          <Text style={styles.divider}></Text>
+          <Text style={styles.confirmationText}>Status: {requestOptions.status}</Text>
+          <Text style={styles.confirmationText}>Tipo: {requestOptions.tipo}</Text>
+          <Text style={styles.confirmationText}>ID do crachá: {requestOptions.ID}</Text>
           <TouchableOpacity style={styles.closeButton} onPress={() => {
             setMessageVisible(false);
             setCrachaID('');
@@ -152,11 +168,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
+  divider: {
+    height: 1,
+    backgroundColor: 'white',
+    marginVertical: 10,
+  },
+
   closeButton: {
     marginTop: 10,
     padding: 15,
     //background white
-    backgroundColor: '#FF1224',
+    backgroundColor: '#3545A7',
     borderRadius: 5,
   },
   closeButtonText: {
@@ -173,7 +195,7 @@ const styles = StyleSheet.create({
   saidaButton: {
     marginTop: 15,
     padding: 30,
-    backgroundColor: '#FF6347',
+    backgroundColor: '#CC0000',
     borderRadius: 5,
   },
 });
