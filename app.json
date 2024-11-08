@@ -28,7 +28,10 @@
         "android.permission.INTERNET",
         ["INTERNET"]
       ],
-      "package": "com.nixoletas.entradareact"
+      "package": "com.nixoletas.entradareact",
+      "config": {
+        "cleartextTraffic": true
+      }
     },
     "web": {
       "bundler": "metro",
