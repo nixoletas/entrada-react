@@ -4,7 +4,7 @@ import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function HomeScreen() {
   const [permission, requestPermission] = useCameraPermissions();
-  const [messageVisible, setMessageVisible] = useState(true);
+  const [messageVisible, setMessageVisible] = useState(false);
   const [movimentacao, setMovimentacao] = useState('entrada');
   const [crachaID, setCrachaID] = useState('');
 
