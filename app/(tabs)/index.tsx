@@ -38,7 +38,6 @@ export default function HomeScreen() {
         .then(response => response.json())
         .then(result => {
           tipo = result;
-          console.log(tipo);
           setMessageVisible(true);
         })
         .then(() => {
@@ -48,21 +47,17 @@ export default function HomeScreen() {
             tipo: tipo,
             status: movimentacao,
           });
-          console.log(requestOptions);
           fetch(url)
-            .then(response => response.status)
-            .then(result => {
-              console.log(url);
-              setMessageVisible(true);
-            })
-            .catch(error => {
-              console.error('Erro na requisição:', error);
-            });
-          return requestOptions;
+          .then(response => response.status)
+          .then(result => {
+            console.log(url);
+            console.log(requestOptions);
+            setMessageVisible(true);
+          })
+          .catch(error => {
+            console.error('Erro na requisição:', error);
+          });
         });
-        return requestOptions;
-    } else {
-      return;
     }
   };
 
@@ -90,6 +85,7 @@ export default function HomeScreen() {
           <TouchableOpacity style={styles.closeButton} onPress={() => {
             setMessageVisible(false);
             setCrachaID('');
+            setRequestOptions({ ID: '', tipo: '', status: '' });
           }}>
             <Text style={styles.closeButtonText}>Fechar</Text>
           </TouchableOpacity>
