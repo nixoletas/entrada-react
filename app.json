@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "bipe",
-    "slug": "bipe",
+    "slug": "entrada-react",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/bipe.png",
