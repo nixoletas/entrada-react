@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/bipe.png",
+        "foregroundImage": "./assets/images/bipe-300.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
