@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/bipe-300.png",
+        "foregroundImage": "./assets/images/bipe1024.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
@@ -39,7 +39,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/bipe.png"
+      "favicon": "./assets/images/bipe1024.png"
     },
     "plugins": [
       "expo-router",
