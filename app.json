@@ -4,7 +4,7 @@
     "slug": "entrada-react",
     "version": "2.5.0",
     "orientation": "portrait",
-    "icon": "./assets/images/bipe-300.png",
+    "icon": "./assets/images/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -17,7 +17,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/bipe1024.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
       "permissions": [
@@ -39,7 +39,7 @@
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/bipe1024.png"
+      "favicon": "./assets/images/icon.png"
     },
     "plugins": [
       "expo-router",
