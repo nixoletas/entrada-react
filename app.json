@@ -16,6 +16,7 @@
       "supportsTablet": true
     },
     "android": {
+      "newArchEnabled": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
@@ -42,10 +43,14 @@
     },
     "plugins": [
       "expo-router",
-      ["expo-build-properties", {
-        "android": {
-          "usesCleartextTraffic": true
-        }}],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ],
       [
         "expo-camera",
         {
@@ -54,7 +59,8 @@
           "recordAudioAndroid": true
         }
       ],
-      "expo-build-properties"
+      "expo-build-properties",
+      "expo-font"
     ],
     "experiments": {
       "typedRoutes": true

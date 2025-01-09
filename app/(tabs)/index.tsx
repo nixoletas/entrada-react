@@ -39,6 +39,7 @@ export default function HomeScreen() {
         .then(result => {
           tipo = result;
           setMessageVisible(true);
+          console.log(result)
         })
         .then(() => {
           const url = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha.php?movimentacao=${data.data}&tipo=${tipo}&status=${movimentacao}&destino=&obs=`;
