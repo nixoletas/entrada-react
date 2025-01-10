@@ -14,6 +14,11 @@ export default function HomeScreen() {
     foto: '',
     pg: '',
     nome: '',
+    fabricante: '',
+    modelo: '',
+    placa: '',
+    eb: '',
+    descricao: ''
   });
 
   if (!permission) {
@@ -72,6 +77,12 @@ export default function HomeScreen() {
       let pg = '';
       let nome = '';
       let foto = '';
+      let fabricante = '';
+      let modelo = '';
+      let placa = '';
+      let eb = '';
+      let descricao = '';
+
       setCrachaID(data.data);
       console.log(data.data);
       fetch(cracha)
@@ -81,12 +92,12 @@ export default function HomeScreen() {
           pg = result.pg;
           nome = result.nome;
           foto = result.foto;
-          console.log({
-            tipo,
-            pg,
-            nome,
-            foto
-          });
+          fabricante = result.fabricante;
+          modelo = result.modelo;
+          placa = result.placa;
+          eb = result.eb_vtr;
+          descricao = result.descr_vtr;
+          console.log(result);
           setMessageVisible(true);
         })
         .then(() => {
@@ -97,7 +108,12 @@ export default function HomeScreen() {
             status: movimentacao,
             foto: `http://10.56.19.173/formtools/upload/${foto}`,
             pg: pg,
-            nome: nome
+            nome: nome,
+            fabricante: fabricante,
+            modelo: modelo,
+            placa: placa,
+            eb: eb,
+            descricao: descricao
           });
           fetch(url)
           .then(response => response.status)
@@ -129,17 +145,44 @@ export default function HomeScreen() {
         <View style={styles.confirmationMessage}>
           <Text style={styles.confirmationText}>{movimentacao.toString().toLocaleUpperCase()} confirmada! ✅</Text>
           <Text style={styles.divider}></Text>
-          <Text style={styles.confirmationText}>Status: {requestOptions.status}</Text>
-          <Text style={styles.confirmationText}>Tipo: {requestOptions.tipo}</Text>
-          <Text style={styles.confirmationText}>{requestOptions.pg} {requestOptions.nome}</Text>
+          <Text style={styles.confirmationText}>Status: {requestOptions.status.toUpperCase()}</Text>
+          <Text style={styles.confirmationText}>Tipo: {requestOptions.tipo.toUpperCase()}</Text>
+          {(() => {
+            switch (requestOptions.tipo) {
+              case 'pessoa':
+                return(
+                  <>
+                  <Text style={styles.confirmationText}>{requestOptions.pg} {requestOptions.nome}</Text>
           <Image
             source={{uri: requestOptions.foto}}
             style={{width: 120, height: 150, alignContent: 'center', justifyContent: 'center', alignSelf: 'center'}}
           />
+                  </>
+                );
+              case 'veiculo':
+                return(
+                  <>
+                  <Text style={styles.divider}></Text>
+                  <Text style={styles.confirmationText}>Modelo: {requestOptions.fabricante} {requestOptions.modelo}</Text>
+                  <Text style={styles.confirmationText}>Placa: {requestOptions.placa}</Text>
+                  </>
+                );
+              case 'viatura':
+                return(
+                  <>
+                  <Text style={styles.divider}></Text>
+                  <Text style={styles.confirmationText}>EB: {requestOptions.eb}</Text>
+                  <Text style={styles.confirmationText}>{requestOptions.descricao}</Text>
+                  </>
+                );
+              default:
+                return <Text style={styles.confirmationText}>Entrada Civil - Obra ou Outros</Text>;
+            }
+          })()}
           <TouchableOpacity style={styles.closeButton} onPress={() => {
             setMessageVisible(false);
             setCrachaID('');
-            setRequestOptions({ ID: '', tipo: '', status: '', pg: '', nome: '', foto: '' });
+            setRequestOptions({ ID: '', tipo: '', status: '', pg: '', nome: '', foto: '', fabricante: '', modelo: '', placa: '', eb: '', descricao: '' });
           }}>
             <Text style={styles.closeButtonText}>Fechar</Text>
           </TouchableOpacity>
