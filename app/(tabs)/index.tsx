@@ -1,6 +1,6 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import React, { useState } from 'react';
-import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 
 export default function HomeScreen() {
   const [permission, requestPermission] = useCameraPermissions();
@@ -11,6 +11,9 @@ export default function HomeScreen() {
     ID: '',
     tipo: '',
     status: '',
+    foto: '',
+    pg: '',
+    nome: '',
   });
 
   if (!permission) {
@@ -28,18 +31,63 @@ export default function HomeScreen() {
     );
   }
 
-  const confirmarEntrada = (data: any) => {
-    if (crachaID != data.data) {
-      const cracha = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha2.php?id=${data.data}`;
-      let tipo = '';
-      setCrachaID(data.data);
+  // const confirmarEntrada = (data: any) => {
+  //   if (crachaID != data.data) {
+  //     const cracha = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha3.php?id=${data.data}`;
+  //     let tipo = '';
+  //     setCrachaID(data.data);
+  //     let dados = data.data;
+  //     console.log(dados.nome);
 
+  //     fetch(cracha)
+  //       .then(response => response.json())
+  //       .then(result => {
+  //         tipo = result;
+  //         setMessageVisible(true);
+  //         console.log(result);
+  //       })
+  //       .then(() => {
+  //         const url = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha.php?movimentacao=${data.data}&tipo=${tipo}&status=${movimentacao}&destino=&obs=`;
+  //         setRequestOptions({
+  //           ID: data.data,
+  //           tipo: tipo,
+  //           status: movimentacao,
+  //         });
+  //         fetch(url)
+  //         .then(response => response.status)
+  //         .then(result => {
+  //           setMessageVisible(true);
+  //         })
+  //         .catch(error => {
+  //           console.error('Erro na requisição:', error);
+  //         });
+  //       });
+  //   }
+  // };
+
+  const obterDados = (data: any) => {
+    if (crachaID != data.data) {
+      const cracha = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha3.php?id=${data.data}`;
+      let tipo = '';
+      let pg = '';
+      let nome = '';
+      let foto = '';
+      setCrachaID(data.data);
+      console.log(data.data);
       fetch(cracha)
         .then(response => response.json())
         .then(result => {
-          tipo = result;
+          tipo = result.tipo;
+          pg = result.pg;
+          nome = result.nome;
+          foto = result.foto;
+          console.log({
+            tipo,
+            pg,
+            nome,
+            foto
+          });
           setMessageVisible(true);
-          console.log(result);
         })
         .then(() => {
           const url = `http://sistemas.9bcomge.eb.mil.br/crachas/cracha.php?movimentacao=${data.data}&tipo=${tipo}&status=${movimentacao}&destino=&obs=`;
@@ -47,6 +95,9 @@ export default function HomeScreen() {
             ID: data.data,
             tipo: tipo,
             status: movimentacao,
+            foto: `http://10.56.19.173/formtools/upload/${foto}`,
+            pg: pg,
+            nome: nome
           });
           fetch(url)
           .then(response => response.status)
@@ -58,7 +109,7 @@ export default function HomeScreen() {
           });
         });
     }
-  };
+  }
 
   return (
     <View style={styles.container}>
@@ -67,7 +118,7 @@ export default function HomeScreen() {
         facing='back'
         barcodeScannerSettings={{ barcodeTypes: ["qr"] }}
         onBarcodeScanned={(data) => {
-          confirmarEntrada(data);
+          obterDados(data);
         }}
       >
         <View style={styles.buttonContainer}>
@@ -80,11 +131,15 @@ export default function HomeScreen() {
           <Text style={styles.divider}></Text>
           <Text style={styles.confirmationText}>Status: {requestOptions.status}</Text>
           <Text style={styles.confirmationText}>Tipo: {requestOptions.tipo}</Text>
-          <Text style={styles.confirmationText}>ID do crachá: {requestOptions.ID}</Text>
+          <Text style={styles.confirmationText}>{requestOptions.pg} {requestOptions.nome}</Text>
+          <Image
+            source={{uri: requestOptions.foto}}
+            style={{width: 120, height: 150, alignContent: 'center', justifyContent: 'center', alignSelf: 'center'}}
+          />
           <TouchableOpacity style={styles.closeButton} onPress={() => {
             setMessageVisible(false);
             setCrachaID('');
-            setRequestOptions({ ID: '', tipo: '', status: '' });
+            setRequestOptions({ ID: '', tipo: '', status: '', pg: '', nome: '', foto: '' });
           }}>
             <Text style={styles.closeButtonText}>Fechar</Text>
           </TouchableOpacity>
